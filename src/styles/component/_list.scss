@@ -1,0 +1,75 @@
+.list-header {
+    background: $light-grey;
+    display: flex;
+    border: 1px solid darken($light-grey, 7%);
+    justify-content: space-between;
+    color: $grey;
+    padding: $s-size $m-size;
+    align-items: center;
+}
+
+.list-body {
+    margin-bottom: $m-size;
+    @media(min-width: $descktop-breakpoint) {
+        margin-bottom: $l-size;
+    }
+}
+
+.list-item {
+    color: $dark-grey;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid darken($light-grey, 7%);
+    border-top: none;
+    padding: $s-size;
+    text-decoration: none;
+    transition: background .3s ease;
+    &:hover {
+        background: $light-grey;
+    }
+    @media (min-width: $descktop-breakpoint) {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: $m-size;
+    }
+}
+
+.list-item--user {
+    &:hover {
+        background: none;
+    }
+}
+
+.list-item--message {
+    align-items: center;
+    justify-content: center;
+    color: $grey;
+    padding: $m-size;
+    &:hover {
+        background: none;
+    }
+}
+
+.list-item__title {
+    margin: 0 0 $s-size 0;
+    word-break: break-all;
+}
+
+.list-item__title__parentdir {
+    cursor: pointer;
+}
+
+.list-item__subtitle {
+    color: $grey;
+    font-size: $font-size-small;
+}
+
+.list-item__data {
+    margin: $s-size 0 0 0;
+    @media (min-width: $descktop-breakpoint) {
+        margin: 0;
+        padding-left: $s-size;
+    }
+}
+

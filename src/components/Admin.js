@@ -1,17 +1,17 @@
-import { Link } from "react-router-dom";
 import Users from "./Users";
+import Header from "./Header";
 
 const Admin = () => {
     return (
         <section>
-            <h1>Admins Page</h1>
-            <br />
-            <Users />
-            <br />
-            <Link to="/register">Add User</Link>
-            <br />
-            <div className="flexGrow">
-                <Link to="/">Home</Link>
+            <Header />
+            <div className="page-header">
+                <div className="content-container">
+                    <h1>Admin Page</h1>
+                </div>
+            </div>
+            <div>
+                <Users />
             </div>
         </section>
     )

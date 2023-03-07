@@ -1,0 +1,26 @@
+.input-group {
+    display: flex;
+    margin-bottom: $m-size;
+    flex-direction: column;
+}
+
+.input-group__item {
+    margin-bottom: $s-size;
+}
+
+.login-input {
+    border: none;
+    border-radius: 3px;
+    margin: .6rem;
+    padding: .6rem;
+}
+
+@media (min-width: $descktop-breakpoint) {
+    .input-group {
+        flex-direction: row;
+        margin-bottom: $m-size;
+    }
+    .input-group__item {
+        margin: 0 $s-size 0 0;
+    }   
+}     

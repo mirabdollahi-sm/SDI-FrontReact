@@ -37,8 +37,6 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
-            // console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             setAuth({ user, pwd, roles, accessToken })
@@ -59,38 +57,42 @@ const Login = () => {
         }
     }
     return (
-        <section>
-            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-            <h1>Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
-                <input 
-                    type="text"
-                    id="username"
-                    // ref={useRef}
-                    autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
-                    value={user}
-                    required 
-                />
-                <label htmlFor="password">Password</label>
-                <input 
-                    type="password"
-                    id="password"
-                    onChange={(e) => setPwd(e.target.value)}
-                    value={pwd}
-                    required 
-                />
-                <button>Log In</button>
-            </form>
-            <p>
-                Need an Acount?<br />
-                <span className="line">
-                    {/*router link*/}                    
-                    <a href="#">Sign Up</a>
-                </span>
-            </p>
-        </section>
+        <div className="box-layout">
+            <div className="box-layout__box">
+                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+                <h1 className="box-layout__title">Samim</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username</label>
+                    <input 
+                        type="text"
+                        className="login-input"
+                        // ref={useRef}
+                        autoComplete="off"
+                        onChange={(e) => setUser(e.target.value)}
+                        value={user}
+                        required 
+                    />
+                    <label htmlFor="password">Password</label>
+                    <input 
+                        type="password"
+                        className="login-input"
+                        onChange={(e) => setPwd(e.target.value)}
+                        value={pwd}
+                        required 
+                    />
+                    <button className="button">Log In</button>
+                </form>
+                {
+                    // <p>
+                    // Need an Acount?<br />
+                    // <span className="line">
+                    //     {/*router link*/}                    
+                    //     <a href="#">Sign Up</a>
+                    // </span>
+                    // </p>
+                }
+            </div>
+        </div>
     )
 }
 
