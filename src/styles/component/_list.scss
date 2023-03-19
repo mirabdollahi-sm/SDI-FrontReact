@@ -40,6 +40,11 @@
         background: none;
     }
 }
+.list-item--dir {
+    &:hover {
+        cursor: pointer;
+    }
+}
 
 .list-item--message {
     align-items: center;

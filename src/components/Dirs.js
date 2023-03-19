@@ -79,7 +79,7 @@ const Dirs = () => {
                   const ext = dir.split('.').pop();
                   const type = fileType(ext);
                   return (
-                    <div className="list-item" key={i} onClick={() => {
+                    <div className="list-item list-item--dir" key={i} onClick={() => {
                       if (type === 'folder') {
                         setCurrentDirectory(`${currentDirectoty}_${dir}`)
                       } else {
