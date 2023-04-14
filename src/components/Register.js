@@ -30,7 +30,7 @@ const Register = () => {
     const [validMatch, setValidMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
 
-    const [admin, setAdmin] = useState('')
+    const [admin, setAdmin] = useState(false)
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -44,6 +44,7 @@ const Register = () => {
                 const response = await axiosPrivate.get(`/users/${id}`, {
                   signal: controller.signal
                 });
+                if ( response.data[0].role === "admin" ) setAdmin(true);
                 setUser(response.data[0].username)
                 // isMounted && setUser(response.data);
               } catch(err) {
@@ -82,6 +83,7 @@ const Register = () => {
         e.preventDefault();
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
+        console.log(admin);
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry")
             return;
@@ -89,13 +91,13 @@ const Register = () => {
         try {
             const response = id !== '0' ? 
                 await axiosPrivate.put(REGISTER_URL,
-                JSON.stringify({ user, pwd, id }),
+                JSON.stringify({ user, pwd, id, admin }),
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
                 })
                 :await axiosPrivate.post(REGISTER_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ user, pwd, admin }),
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -104,6 +106,7 @@ const Register = () => {
             setUser('');
             setPwd('');
             setMatchPwd('');
+            setAdmin('')
         } catch(err) {
             if (!err?.response) {
                 setErrMsg('No Server Response')
@@ -215,14 +218,22 @@ const Register = () => {
                                     onFocus={() => setMatchFocus(true)}
                                     onBlur={() => setMatchFocus(false)}
                                 />
-                                <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                                <p 
+                                    id="confirmnote" 
+                                    className={matchFocus && !validMatch ? "instructions" : "offscreen"}
+                                >
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     Must match the first password input field.
                                 </p>
-                                /*<div>
-                                    <label for="admin">Admin: </label>
-                                    <input type="checkbox" id="admin" name="Admin" />
-                                </div>*/
+                                <div className="checkBoxLine">
+                                    <label htmlFor="admin">Admin: </label>
+                                    <input 
+                                        type="checkbox"
+                                        id="admin"
+                                        onChange={() => {setAdmin(prev => !prev)}}
+                                        checked={admin} 
+                                    />
+                                </div>
                                 <button className="button" disabled={!validName || !validPwd || !validMatch ? true : false}>
                                     { id !== '0' ? `Edit User`:'Add User'}
                                 </button>
