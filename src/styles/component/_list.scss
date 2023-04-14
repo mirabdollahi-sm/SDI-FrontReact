@@ -72,9 +72,12 @@
 
 .list-item__data {
     margin: $s-size 0 0 0;
+    font-style: italic;
+    font-size: small;
     @media (min-width: $descktop-breakpoint) {
         margin: 0;
         padding-left: $s-size;
     }
 }
+
 

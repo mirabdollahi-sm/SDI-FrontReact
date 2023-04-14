@@ -14,3 +14,18 @@
     @extend .text-input;
     height: 10rem;
 }
+
+.checkBoxLine {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    label {
+        margin: 0;
+    }
+}
+
+[type="checkbox"] {
+    height: 20px;
+    width: 20px;
+    margin: 0 5px ;
+}

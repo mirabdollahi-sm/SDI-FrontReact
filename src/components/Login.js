@@ -6,7 +6,7 @@ import axios from "../api/axios";
 const LOGIN_URL = '/auth'
 
 const Login = () => {
-    const  { setAuth } = useAuth();
+    const  { setAuth, persist, setPersist } = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,8 +38,8 @@ const Login = () => {
                 }
             );
             const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ user, pwd, roles, accessToken })
+            const role = response?.data?.role;
+            setAuth({ user, pwd, role, accessToken })
             setUser('');
             setPwd('');
             navigate(from, { replace: true});
@@ -56,6 +56,14 @@ const Login = () => {
             errRef.current.focus();
         }
     }
+    
+    const togglePersist = () => {
+        setPersist(prev => !prev);
+    }
+
+    useEffect(() => {
+        localStorage.setItem("persist", persist);
+    }, [persist])
     return (
         <div className="box-layout">
             <div className="box-layout__box">
@@ -80,17 +88,19 @@ const Login = () => {
                         value={pwd}
                         required 
                     />
+                    <div className="checkBoxLine">
+                        <label htmlFor="persist">Trust This Device</label>
+                        <input
+                            type="checkbox"
+                            id="persist"
+                            onChange={togglePersist}
+                            checked={persist}
+                        />
+                    </div>
                     <button className="button">Log In</button>
+                        
+                    
                 </form>
-                {
-                    // <p>
-                    // Need an Acount?<br />
-                    // <span className="line">
-                    //     {/*router link*/}                    
-                    //     <a href="#">Sign Up</a>
-                    // </span>
-                    // </p>
-                }
             </div>
         </div>
     )

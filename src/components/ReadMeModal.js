@@ -26,23 +26,24 @@ const ReadMeModal = (props) => {
     }, [readMe]);
     
     return (
-    <Modal
-    isOpen={!!currentDirectoty}
-    contentLabel="ReadMeModal"
-    onRequestClose={() => {
-        props.handleClose();
-    }}
-    ariaHideApp={false}
-    closeTimeoutMS={200}
-    className='modal'
-    >
-        <h1>{currentDirectoty.split('_').pop()}</h1>
-        <iframe
-        className="modal__content" 
-        src={readMePath} 
-        title="description" />
-    </Modal>
-)};
+        <Modal
+            isOpen={!!currentDirectoty}
+            contentLabel="ReadMeModal"
+            onRequestClose={() => {
+                props.handleClose();
+            }}
+            ariaHideApp={false}
+            closeTimeoutMS={200}
+            className='modal'
+        >
+            <h1>{currentDirectoty.split('_').pop()}</h1>
+            <iframe
+            className="modal__content" 
+            src={readMePath} 
+            title="description" />
+        </Modal>
+    )
+};
 
 
 

@@ -60,12 +60,12 @@ const Users = () => {
                       {`${i + 1} - ${user.username}`}
                     </div>
                     <div>
-                      <button className="button button--regular" onClick={() => { navigate(`/register/${user._id}`) }}>
+                      <button className="button button--regular" onClick={() => { navigate(`/register/${user.user_id}`) }}>
                         <FontAwesomeIcon className="icon" icon={faEdit} />
                         Edit
                       </button>
                       <button className="button button--regular" onClick={async () => {
-                        await axiosPrivate.delete(`users/${user._id}`,
+                        await axiosPrivate.delete(`users/${user.user_id}`,
                         {
                           headers: {'Content-Type': 'application/json'},
                           withCredentials: true

@@ -7,6 +7,7 @@ import Editor from './components/Editor';
 import Admin from './components/Admin';
 import Missing from './components/Missing';
 import RequireAuth from './components/RequireAuth';
+import PersistLogin from './components/PersistLogin';
 import { Routes, Route } from 'react-router-dom';
 
 // Style Imports
@@ -28,19 +29,20 @@ function App() {
         <Route path='unauthorized' element={<Unauthorized />} />
         
         {/* private routes */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path='/' element={<Home />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+            <Route path='/' element={<Home />} />
+          </Route>
+          
+          <Route path='editor' element={<Editor />} />
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
+          </Route>
+          
+          <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+            <Route path='register/:id' element={<Register />} />
+            <Route path='admin' element={<Admin />} />
+          </Route>
         </Route>
-        
-        <Route path='editor' element={<Editor />} />
-          <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-        </Route>
-        
-        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path='register/:id' element={<Register />} />
-          <Route path='admin' element={<Admin />} />
-        </Route>
-
         {/* cath all */}
         <Route path='*' element={<Missing />} />
       </Route>

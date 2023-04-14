@@ -11,7 +11,6 @@ const REGISTER_URL = '/users';
 
 const Register = () => {
     const { id } = useParams();
-
     const navigate = useNavigate();
 
     const axiosPrivate = useAxiosPrivate();
@@ -45,7 +44,7 @@ const Register = () => {
                 const response = await axiosPrivate.get(`/users/${id}`, {
                   signal: controller.signal
                 });
-                setUser(response.data.username)
+                setUser(response.data[0].username)
                 // isMounted && setUser(response.data);
               } catch(err) {
                 console.error(err);

@@ -1,18 +1,15 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
+import useLogout from '../hooks/useLohout';
 
 const Header = () => {
     const { auth } = useAuth();
-    const { setAuth } = useContext(AuthContext);
+    const logout = useLogout();
     const navigate = useNavigate();
-    const logout = async () => {
-        // if used in more components, this should be in context 
-        // axios to /logout endpoint 
-        setAuth({});
+    const signOut = async () => {
+        await logout();
         navigate('/login');
     }
     return (
@@ -23,7 +20,7 @@ const Header = () => {
                         <h1>Samim Directory Indexing</h1>
                     </Link>               
                     {
-                        !!auth?.roles?.find(role => [5150]?.includes(role)) &&
+                        auth.role === 'admin' &&
                         <NavLink
                             to='/admin'
                             className={({ isActive }) => (isActive ? 'active' : '')}>
@@ -31,14 +28,14 @@ const Header = () => {
                         </NavLink>
                     }
                     {
-                        !!auth?.roles?.find(role => [1984]?.includes(role)) && false &&
+                        ( auth.role === 'admin' || auth.role === 'editor' ) && false &&
                         <NavLink 
                             to='/editor'    
                             className={({ isActive }) => (isActive ? 'active' : '')}>
                             Editor
                         </NavLink>
                     }
-                    <button className='button button--link' onClick={logout}>Log Out</button>
+                    <button className='button button--link' onClick={signOut}>Log Out</button>
                 </div>
             </div>
         </header>

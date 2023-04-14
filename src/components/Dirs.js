@@ -1,19 +1,24 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useAxiosPrivateDownload from "../hooks/useAxiosPrivateDownload";
+import { b64EncodeUnicode } from "../actions/urlDecode"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder, faLevelUp, faFileZipper, faImage, faVideo, faFilePdf, faFileWord, faFileText, faFileExcel, faFilePowerpoint, faFileAudio, faFile } from "@fortawesome/free-solid-svg-icons";
-import ReadMeModal from "./ReadMeModal";
-import fileType from "../actions/fileType";
+import useAuth from '../hooks/useAuth';
+import { faFolder, faLevelUp, faFileZipper, faImage, faVideo, faFileWord } from "@fortawesome/free-solid-svg-icons";
+import { faFilePdf, faFileText, faFileExcel, faFilePowerpoint, faFileAudio, faFile } from "@fortawesome/free-solid-svg-icons";
 import { saveAs } from 'file-saver';
+import ReadMe from "./ReadMe";
 
 
 const Dirs = () => {
+  const { auth } = useAuth();
   const [ dirs, setDirs ] = useState([]);
-  const [ currentDirectoty, setCurrentDirectory ] = useState('root');
+  const [ currentDirectotyId, setCurrentDirectoryId ] = useState(1);
   const [ parent, setParent] = useState('.');
-  const [ hasReadme, setHasReadme ] = useState(false);
-  const [ readMeModal, setReadMeModal] = useState('')
+  const [ parentId, setParentId ] = useState(0)
+  const [ refreshDb, setRefreshDb ] = useState(false)
+  const [ readmeId, setReadmeId ] = useState(false);
+  const [ readMeModal, setReadMeModal] = useState('');
   const axiosPrivate = useAxiosPrivate();
   const axiosPrivateDownload = useAxiosPrivateDownload();
 
@@ -22,100 +27,108 @@ const Dirs = () => {
     const controller = new AbortController();
     const getDirs = async () => {
       try {
-        const target = '/read/' + currentDirectoty
+        const target = `/read/${b64EncodeUnicode(currentDirectotyId)}`
         const response = await axiosPrivate.get(target, {
           signal: controller.signal
-        }); 
-        setParent(response.data.par);
-        setHasReadme(response.data.readme);
+        });
+        setParent(response.data.name);
+        setParentId(response.data.parent_id);
+        setReadmeId(response.data.readMe);
         isMounted && setDirs(response.data.children);
       } catch(err) {
         console.error(err);
       }
     }
     getDirs();
+    setRefreshDb(false)
     return () => {
         isMounted = false;
         controller.abort();
     }
-  },[currentDirectoty])
+  },[currentDirectotyId, refreshDb])
 
   return (
     <div className="content-container">
-        <ReadMeModal currentDirectoty={readMeModal} handleClose={() => {setReadMeModal('')}} />
+        {/*<ReadMeModal currentDirectoty={readMeModal} handleClose={() => {setReadMeModal('')}} />*/}
         <div className="list-header" >
           <div 
           className="list-item__title__parentdir"
           onClick={() => {
-            if(currentDirectoty !== 'root') {
-              let parentRequest = parent;
-              parentRequest = parentRequest.replaceAll('/' , '_').slice(3);
-              setCurrentDirectory(parentRequest);
+            if( currentDirectotyId !== 1 ) {
+              setCurrentDirectoryId(parentId);
             }
           }} >
             <div className="show-for-mobile">
               <FontAwesomeIcon className="icon" icon={faLevelUp} />
-              {currentDirectoty.replaceAll('_' , ' / ')}
+              {parent.slice(3).replaceAll('/',' / ')}
             </div>
             <div className="show-for-descktop">
               <FontAwesomeIcon className="icon" icon={faLevelUp} />
-              {currentDirectoty.replaceAll('_' , ' / ')}
+              {parent.slice(3).replaceAll('/',' / ')}
             </div>
           </div>
-            { hasReadme && <button
-                          className="button button--regular"
-                          onClick={() => {
-                            setReadMeModal(currentDirectoty)
-                          }}
-                        >ReadMe
-                        </button> 
-            }
+          {auth.role === 'admin' && <button
+            className="button button--regular"
+            onClick={() => {
+              axiosPrivate.get('/refdb');
+              setRefreshDb(true);
+            }}
+          >
+            RefreshDB
+          </button>}
         </div>
         <div className="list-body">
           {
             dirs?.length? (     
               <span>
                 {dirs.map((dir, i) => {
-                  const ext = dir.split('.').pop();
-                  const type = fileType(ext);
+                  const type = dir.file_type
+                  const size = parseInt(dir.file_size) >= 1048576 ?
+                  `${(parseInt(dir.file_size)/1048576).toFixed(2)}MB` :
+                  `${(parseInt(dir.file_size)/1024).toFixed(0)}KB`
                   return (
                     <div className="list-item list-item--dir" key={i} onClick={() => {
-                      if (type === 'folder') {
-                        setCurrentDirectory(`${currentDirectoty}_${dir}`)
+                      if (type.search('folder') !== -1) {
+                        setCurrentDirectoryId(dir.file_id)
                       } else {
-                        const target = `/read/${currentDirectoty}_${dir}`
-                        axiosPrivateDownload.get(target).then((response) => {                               
-                          saveAs(response.data, dir);
+                        axiosPrivateDownload.get(`/read/${b64EncodeUnicode(dir.file_id)}`).then((response) => {                              
+                          saveAs(response.data, dir.file_name.split('/').pop());
                         });
                       }
                     }}>
                       <div>
                         <FontAwesomeIcon className="icon" icon={ 
-                          type === 'zip' 
+                          type.search('zip') !== -1
                             ? faFileZipper 
-                            : type === 'image'
+                            : type.search('image') !== -1
                             ? faImage
-                            : type === 'audio'
+                            : type.search('audio') !== -1
                             ? faFileAudio
-                            : type === 'video'
+                            : type.search('video') !== -1
                             ? faVideo
-                            : type === 'pdf'
+                            : type.search('pdf') !== -1
                             ? faFilePdf
-                            : type === 'word'
+                            : type.search('word') !== -1
                             ? faFileWord
-                            : type === 'text'
+                            : type.search('text') !== -1
                             ? faFileText
-                            : type === 'excel'
+                            : type.search('excel') !== -1
                             ? faFileExcel
-                            : type === 'powerpoint'
+                            : type.search('powerpoint') !== -1
                             ? faFilePowerpoint
-                            : type === 'html'
+                            : type.search('html') !== -1
                             ? faFileText
-                            : type === 'sup'
-                            ? faFile
-                            : faFolder
+                            : type.search('folder') !== -1
+                            ? faFolder
+                            : faFile
                         }/>
-                        {dir}
+                        {dir.file_name.split('/').pop()}
+                        {
+                          type.search('folder') === -1 && 
+                          <span className="list-item__data">
+                            {size}
+                          </span>
+                        }
                       </div>
                     </div>
                   )
@@ -124,6 +137,7 @@ const Dirs = () => {
             ) : <div className="list-item" >No content to display</div>
           }
         </div>
+        {readmeId && <ReadMe readMeId={readmeId}/>}
     </div>
   )
 }
