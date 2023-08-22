@@ -11,7 +11,7 @@ const Unauthorized = () => {
             <br />
             <p>You do not have access to the requested page.</p>
             <div className="flexGrow">
-                <button onClick={() => {navigate('/login')}}>Go Back</button>
+                <button className="button" onClick={() => {navigate('/login')}}>Go Back</button>
             </div>
         </section>
     )

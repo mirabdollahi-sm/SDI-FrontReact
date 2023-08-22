@@ -1,26 +1,44 @@
+button {
+  font-family: sans-serif;
+  font-size: 22px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
 .button {
-    background: $blue;
-    border: none;
-    color: white;
-    margin: $s-size;
-    font-size: $font-size-large;
-    font-weight: 300;
-    display: inline-block;
-    line-height: 1;
-    padding: $s-size;
-    text-decoration: none;
+  background: $blue;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  margin: $s-size;
+  font-size: $font-size-large;
+  font-weight: 300;
+  display: inline-block;
+  line-height: 1;
+  padding: $s-size;
+  text-decoration: none;
 }
 
 .button--link {
-    background: none;
+  background: none;
 }
 
 .button--secondary {
-    background: #888;
-    margin-top: 0;
+  background: #888;
+  margin-top: 0;
 }
 
 .button--regular {
-    margin: 0 $t-size;
-    font-size: $font-size-small;
+  margin: 0 $t-size;
+  font-size: $font-size-small;
+}
+
+a,
+a:visited {
+  color: #fff;
 }

@@ -35,7 +35,7 @@ const Header = () => {
                             Editor
                         </NavLink>
                     }
-                    <button className='button button--link' onClick={signOut}>Log Out</button>
+                    <button className='button button--link' onClick={signOut}>Logout</button>
                 </div>
             </div>
         </header>

@@ -1,31 +1,40 @@
+input[type="text"],
+input[type="password"],
+textarea {
+  font-family: sans-serif;
+  font-size: 22px;
+  padding: 0.25rem;
+  border-radius: 0.5rem;
+}
+
 .text-input {
-    border: 1px solid #cacccd;
-    height: 50px;
-    padding: $s-size;
-    font-size: $font-size-large;
-    font-weight: 300;
+  border: 1px solid #cacccd;
+  height: 50px;
+  padding: $s-size;
+  font-size: $font-size-large;
+  font-weight: 300;
 }
 
 .select {
-    @extend .text-input;
+  @extend .text-input;
 }
 
 .textarea {
-    @extend .text-input;
-    height: 10rem;
+  @extend .text-input;
+  height: 10rem;
 }
 
 .checkBoxLine {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-    label {
-        margin: 0;
-    }
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  label {
+    margin: 0;
+  }
 }
 
 [type="checkbox"] {
-    height: 20px;
-    width: 20px;
-    margin: 0 5px ;
+  height: 16px;
+  width: 16px;
+  margin: 0 5px;
 }

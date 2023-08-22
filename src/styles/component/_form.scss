@@ -4,9 +4,46 @@
     > * {
         margin-bottom: $s-size;
     }
+    justify-content: space-evenly;
+    flex-grow: 1;
 }
 
-.form__error {
-    margin: 0 0 $m-size 0;
-    font-style: italic;
+.instructions {
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    background: #000;
+    color: #fff;
+    padding: 0.25rem;
+    bottom: -10px;
+} 
+
+.instructions > svg {
+    margin-right: 0.25rem;
+}
+
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
+
+.hide {
+    display: none;
+}
+
+.valid {
+    color: limegreen;
+    margin-left: 0.25rem;
+}
+
+.invalid {
+    color: red;
+    margin-left: 0.25rem;
+}
+
+.errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
 }
